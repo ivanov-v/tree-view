@@ -1,11 +1,15 @@
 {
   "name": "tree-view",
   "version": "1.0.0",
-  "description": "vanilla tree-view",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
-  "author": "Ivanov Vadim",
-  "license": "ISC"
+  "keywords": [],
+  "author": "Ivanov",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^2.5.1"
+  }
 }
