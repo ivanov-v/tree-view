@@ -1,16 +1,24 @@
-export function tree(tree) {
+export function treeTempl(tree) {
   return `
     <ul>
-      ${item(tree)}
+      ${itemTempl(tree)}
     </ul>
   `;
 }
 
-export function item({ name, branch }) {
+export function itemTempl({ name, branch }) {
   return `
     <li>
       <b>${name}</b>
-      ${}
+      ${branch ? branchTempl(branch) : ''}
     </li>
+  `;
+}
+
+export function branchTempl(items) {
+  return `
+    <ul>
+      ${items.map(item => itemTempl(item)).join('')}
+    </ul>
   `;
 }

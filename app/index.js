@@ -1,9 +1,9 @@
 import model from './model';
-import { tree } from './view/tree';
+import { treeTempl } from './view/tree';
 
 function render() {
   const app = document.querySelector('#app');
-  app.innerHTML = tree(model.state);
+  app.innerHTML = treeTempl(model.state);
 }
 
 render();
