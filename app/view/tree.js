@@ -1,24 +1,24 @@
 export function treeTempl(tree) {
   return `
-    <ul>
-      ${itemTempl(tree)}
-    </ul>
+    <ul class="tree">${ nodeTempl(tree) }</ul>
   `;
 }
 
-export function itemTempl({ name, branch }) {
+export function nodeTempl({ name, branch }) {
   return `
-    <li>
-      <b>${name}</b>
-      ${branch ? branchTempl(branch) : ''}
+    <li class="node">
+      <div class="node__inner">
+        <input class="node__input" type="text" value=${ name }>
+      </div>
+      ${ branch ? branchTempl(branch) : '' }
     </li>
   `;
 }
 
 export function branchTempl(items) {
   return `
-    <ul>
-      ${items.map(item => itemTempl(item)).join('')}
+    <ul class="branch">
+      ${ items.map(item => nodeTempl(item)).join('') }
     </ul>
   `;
 }

@@ -14,6 +14,9 @@ const initialState = {
               name: 'tree2',
               branch: [
                 {
+                  name: 'tree1'
+                },
+                {
                   name: 'tree2'
                 },
                 {

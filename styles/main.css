@@ -1,0 +1,88 @@
+body,
+html {
+  height: 100%;
+  padding: 0;
+  margin: 0
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+::after,
+::before {
+    box-sizing: inherit
+}
+
+.app {
+  padding: 50px;
+}
+
+.tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tree > .node {
+  padding-left: 0;
+  padding-top: 0;
+}
+
+.tree > .node > .node__inner::before,
+.tree > .node > .node__inner::after {
+  display: none;
+}
+
+.branch {
+  position: relative;
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.node {
+  padding-top: 10px;
+  padding-left: 20px;
+  border-left: 1px solid #d1d1d1;
+}
+
+.node__input {
+  height: 19px;
+}
+
+.node:last-child {
+  border-color: transparent;
+}
+
+.node:last-child .node__inner::before {
+  content: '';
+  position: absolute;
+  top: -11px;
+  right: 100%;
+  margin-right: 21px;
+  width: 1px;
+  height: 27px;
+  background: #d1d1d1;
+}
+
+.node__inner {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  padding: 5px;
+  border: 1px solid #d1d1d1;
+  background-color: #fff;
+  box-shadow: 1px 1px 1px rgba(221, 221, 221, 0.5);
+}
+
+.node__inner::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: 100%;
+  width: 21px;
+  height: 1px;
+  background: #d1d1d1;
+}
