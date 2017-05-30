@@ -9,6 +9,10 @@ export function nodeTempl({ name, branch }) {
     <li class="node">
       <div class="node__inner">
         <input class="node__input" type="text" value=${ name }>
+        <div class="node__buttons">
+          <button class="node__button">remove -</button>
+          <button class="node__button">add +</button>
+        </div>
       </div>
       ${ branch ? branchTempl(branch) : '' }
     </li>

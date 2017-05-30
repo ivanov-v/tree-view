@@ -50,6 +50,7 @@ html {
 
 .node__input {
   height: 19px;
+  margin-bottom: 5px;
 }
 
 .node:last-child {
@@ -85,4 +86,16 @@ html {
   width: 21px;
   height: 1px;
   background: #d1d1d1;
+}
+
+.node__buttons {
+  display: flex;
+}
+
+.node__button {
+  flex-grow: 1;
+}
+
+.node__button:first-child {
+  margin-right: 5px;
 }
