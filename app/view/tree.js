@@ -4,17 +4,17 @@ export function treeTempl(tree) {
   `;
 }
 
-export function nodeTempl({ name, branch }) {
+export function nodeTempl({ id, name, branch }) {
   return `
     <li class="node">
       <div class="node__inner">
         <input class="node__input" type="text" value=${ name }>
         <div class="node__buttons">
-          <button class="node__button">remove -</button>
-          <button class="node__button">add +</button>
+          <button class="node__button" data-id="${ id }">remove -</button>
+          <button class="node__button" data-id="${ id }">add +</button>
         </div>
       </div>
-      ${ branch ? branchTempl(branch) : '' }
+      ${ branch && branch.length ? branchTempl(branch) : '' }
     </li>
   `;
 }

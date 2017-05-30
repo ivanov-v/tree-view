@@ -1,40 +1,7 @@
 const initialState = {
-  name: 'tree',
-  branch: [
-    {
-      name: 'tree2',
-      branch: [
-        {
-          name: 'tree2'
-        },
-        {
-          name: 'tree3',
-          branch: [
-            {
-              name: 'tree2',
-              branch: [
-                {
-                  name: 'tree1'
-                },
-                {
-                  name: 'tree2'
-                },
-                {
-                  name: 'tree3'
-                }
-              ]
-            },
-            {
-              name: 'tree3'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: 'tree3'
-    }
-  ]
+  id: 1,
+  name: 'element 1',
+  branch: []
 };
 
 class Model {
