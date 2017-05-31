@@ -1,14 +1,14 @@
 import model from './model';
 import { treeTempl } from './view/tree';
 
-function render(state = model.state) {
+function render(tree = model.state) {
   const app = document.querySelector('#app');
-  app.innerHTML = treeTempl(state);
+  app.innerHTML = treeTempl(tree);
 }
 
 render();
 
-const initialState = {
+const state = {
   root: true,
   id: 1,
   name: 'element-1',
@@ -53,8 +53,13 @@ document.addEventListener('click', (event) => {
   const action = target.getAttribute('data-action');
   const id = parseInt(target.parentNode.getAttribute('data-id'), 10);
 
-  addNode(initialState, id);
-  render(initialState);
+  if (action == 'remove') {
+    removeNode(state, id);
+  } else if (action == 'add') {
+    addNode(state, id);
+  }
+
+  render(state);
 });
 
 class Node {
@@ -65,31 +70,31 @@ class Node {
   }
 }
 
-function getNewNodeId(state) {
+function getNewNodeId(tree) {
   const nodes = [];
 
-  forEachTree(state, (node) => {
+  forEachTree(tree, (node) => {
     nodes.push(node.id);
   });
 
   return Math.max(...nodes) + 1;
 }
 
-function forEachTree(node, callback) {
+function forEachTree(tree, callback) {
   (function each(currentNode) {
     currentNode.branch.forEach(node => each(node));
     callback(currentNode);
-  })(node);
+  })(tree);
 }
 
-function addNode(state, parentId) {
-  const nodeId = getNewNodeId(state);
+function addNode(tree, parentId) {
+  const nodeId = getNewNodeId(tree);
   const newNode = new Node(nodeId);
 
-  if (parentId === state.id) {
-    state.branch.push(newNode);
+  if (parentId === tree.id) {
+    tree.branch.push(newNode);
   } else {
-    forEachTree(state, (node) => {
+    forEachTree(tree, (node) => {
       if (node.id === parentId) {
         node.branch.push(newNode);
       }
@@ -97,25 +102,18 @@ function addNode(state, parentId) {
   }
 }
 
-// function addNode(tree, parentId) {
-//   const nodeId = getNewNodeId(state);
-//   const newNode = new Node(nodeId);
-//   let newTree;
-//
-//   if (parentId === tree.id) {
-//     newTree = {
-//       ...tree,
-//       branch: [...tree.branch, node]
-//     };
-//   } else {
-//     forEachTree(tree, (node) => {
-//       if (node.id === parentId) {
-//         node.branch.push(newNode);
-//
-//       }
-//     });
-//   }
-//
-//   return newTree;
-//   console.log(state);
-// }
+function removeNode(tree, id) {
+  const queue = [tree];
+
+  while(queue.length) {
+    const node = queue.shift();
+
+    for (let i = 0; i < node.branch.length; i++) {
+      if (node.branch[i].id === id) {
+        node.branch.splice(i, 1);
+      } else {
+        queue.push(node.branch[i]);
+      }
+    }
+  }
+}
