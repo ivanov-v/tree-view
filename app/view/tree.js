@@ -1,17 +1,15 @@
 export function treeTempl(tree) {
-  return `
-    <ul class="tree">${ nodeTempl(tree) }</ul>
-  `;
+  return `<ul class="tree">${ nodeTempl(tree) }</ul>`;
 }
 
-export function nodeTempl({ id, name, branch, root }) {
+function nodeTempl({ id, name, branch, root }) {
   return `
     <li class="node">
       <div class="node__inner">
         <input class="node__input" type="text" value=${ name }>
-        <div class="node__buttons">
-          ${ root ? '' : buttonRemoveTempl(id) }
-          <button class="node__button" data-id="${ id }">add +</button>
+        <div class="node__buttons" data-id="${ id }">
+          ${ root ? '' : buttonTempl('remove', 'remove -') }
+          ${ buttonTempl('add', 'add +') }
         </div>
       </div>
       ${ branch && branch.length ? branchTempl(branch) : '' }
@@ -19,7 +17,7 @@ export function nodeTempl({ id, name, branch, root }) {
   `;
 }
 
-export function branchTempl(items) {
+function branchTempl(items) {
   return `
     <ul class="branch">
       ${ items.map(item => nodeTempl(item)).join('') }
@@ -27,8 +25,10 @@ export function branchTempl(items) {
   `;
 }
 
-function buttonRemoveTempl(id) {
-  return `
-    <button class="node__button" data-id="${ id }">remove -</button>
-  `;
+function buttonRemoveTempl() {
+  return `<button class="node__button">remove -</button>`;
+}
+
+function buttonTempl(action, text) {
+  return `<button class="node__button" data-action="${ action }">${ text }</button>`;
 }
