@@ -4,10 +4,10 @@ export function treeTempl(tree) {
 
 function nodeTempl({ id, name, branch, root }) {
   return `
-    <li class="node">
+    <li class="node" data-id="${ id }">
       <div class="node__inner">
         <input class="node__input" type="text" value=${ name }>
-        <div class="node__buttons" data-id="${ id }">
+        <div class="node__buttons">
           ${ root ? '' : buttonTempl('remove', 'remove -') }
           ${ buttonTempl('add', 'add +') }
         </div>
@@ -23,10 +23,6 @@ function branchTempl(items) {
       ${ items.map(item => nodeTempl(item)).join('') }
     </ul>
   `;
-}
-
-function buttonRemoveTempl() {
-  return `<button class="node__button">remove -</button>`;
 }
 
 function buttonTempl(action, text) {

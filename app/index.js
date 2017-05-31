@@ -4,6 +4,7 @@ import { treeTempl } from './view/tree';
 function render(tree = model.state) {
   const app = document.querySelector('#app');
   app.innerHTML = treeTempl(tree);
+  updateListeners();
 }
 
 render();
@@ -51,7 +52,7 @@ document.addEventListener('click', (event) => {
   }
 
   const action = target.getAttribute('data-action');
-  const id = parseInt(target.parentNode.getAttribute('data-id'), 10);
+  const id = parseInt(target.closest('.node').getAttribute('data-id'), 10);
 
   if (action == 'remove') {
     removeNode(state, id);
@@ -61,6 +62,18 @@ document.addEventListener('click', (event) => {
 
   render(state);
 });
+
+function updateListeners() {
+  [...document.querySelectorAll('.node__input')].forEach(input => {
+    input.addEventListener('input', event => {
+      const { target } = event;
+      const nodeElem = target.closest('.node');
+      const id = parseInt(nodeElem.getAttribute('data-id'));
+
+      renameNode(state, id, target.value);
+    });
+  });
+}
 
 class Node {
   constructor(id) {
@@ -115,5 +128,17 @@ function removeNode(tree, id) {
         queue.push(node.branch[i]);
       }
     }
+  }
+}
+
+function renameNode(tree, id, name) {
+  if (id === tree.id) {
+    tree.name = name;
+  } else {
+    forEachTree(tree, (node) => {
+      if (node.id === id) {
+        node.name = name;
+      }
+    });
   }
 }
