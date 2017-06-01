@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node_modules/.bin/webpack-dev-server & webpack --watch",
-    "build": "jest & webpack",
+    "build": "cp -r public/* dist/ && node_modules/.bin/webpack",
     "test": "jest"
   },
   "keywords": [],

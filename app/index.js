@@ -1,13 +1,7 @@
 import Model from './model';
 import { treeTempl } from './view/tree';
 
-const model = new Model();
-
-function render(tree = model.state) {
-  const app = document.querySelector('#app');
-  app.innerHTML = treeTempl(tree);
-  updateListeners();
-}
+let model = new Model(getLocalTree());
 
 render();
 
@@ -28,6 +22,7 @@ document.addEventListener('click', (event) => {
   }
 
   render(model.state);
+  saveLocalTree(model.state);
 });
 
 function updateListeners() {
@@ -35,9 +30,26 @@ function updateListeners() {
     input.addEventListener('input', event => {
       const { target } = event;
       const nodeElem = target.closest('.node');
-      const id = parseInt(nodeElem.getAttribute('data-id'));
+      const id = parseInt(nodeElem.getAttribute('data-id'), 10);
 
       model.renameNode(id, target.value);
+      saveLocalTree(model.state);
     });
   });
+}
+
+function getLocalTree() {
+  const savedTree = localStorage.getItem('tree');
+  return savedTree ? JSON.parse(savedTree) : undefined;
+}
+
+function saveLocalTree(tree) {
+  const savedTree = JSON.stringify(tree);
+  localStorage.setItem('tree', savedTree);
+}
+
+function render(tree = model.state) {
+  const app = document.querySelector('#app');
+  app.innerHTML = treeTempl(tree);
+  updateListeners();
 }
