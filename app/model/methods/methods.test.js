@@ -1,4 +1,4 @@
-import { getNewNodeId, addNode, removeNode, renameNode } from './index';
+import { getNewNodeId, addNode, removeNode, renameNode } from './methods';
 
 test('Should return a new unique id', () => {
   expect(getNewNodeId({

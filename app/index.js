@@ -9,41 +9,6 @@ function render(tree = model.state) {
 
 render();
 
-const state = {
-  root: true,
-  id: 1,
-  name: 'element-1',
-  branch: [
-    {
-      id: 2,
-      name: 'element-2',
-      branch: [
-        {
-          id: 3,
-          name: 'element-3',
-          branch: []
-        },
-        {
-          id: 4,
-          name: 'element-4',
-          branch: []
-        }
-      ]
-    },
-    {
-      id: 5,
-      name: 'element-5',
-      branch: [
-        {
-          id: 6,
-          name: 'element-6',
-          branch: []
-        }
-      ]
-    }
-  ]
-};
-
 document.addEventListener('click', (event) => {
   const { target } = event;
 
@@ -55,12 +20,12 @@ document.addEventListener('click', (event) => {
   const id = parseInt(target.closest('.node').getAttribute('data-id'), 10);
 
   if (action == 'remove') {
-    removeNode(state, id);
+    model.removeNode(id);
   } else if (action == 'add') {
-    addNode(state, id);
+    model.addNode(id);
   }
 
-  render(state);
+  render(model.state);
 });
 
 function updateListeners() {
@@ -70,75 +35,7 @@ function updateListeners() {
       const nodeElem = target.closest('.node');
       const id = parseInt(nodeElem.getAttribute('data-id'));
 
-      renameNode(state, id, target.value);
+      model.renameNode(id, target.value);
     });
   });
-}
-
-class Node {
-  constructor(id) {
-    this.id = id;
-    this.name = 'element-' + id;
-    this.branch = [];
-  }
-}
-
-function getNewNodeId(tree) {
-  const nodes = [];
-
-  forEachTree(tree, (node) => {
-    nodes.push(node.id);
-  });
-
-  return Math.max(...nodes) + 1;
-}
-
-function forEachTree(tree, callback) {
-  (function each(currentNode) {
-    currentNode.branch.forEach(node => each(node));
-    callback(currentNode);
-  })(tree);
-}
-
-function addNode(tree, parentId) {
-  const nodeId = getNewNodeId(tree);
-  const newNode = new Node(nodeId);
-
-  if (parentId === tree.id) {
-    tree.branch.push(newNode);
-  } else {
-    forEachTree(tree, (node) => {
-      if (node.id === parentId) {
-        node.branch.push(newNode);
-      }
-    });
-  }
-}
-
-function removeNode(tree, id) {
-  const queue = [tree];
-
-  while(queue.length) {
-    const node = queue.shift();
-
-    for (let i = 0; i < node.branch.length; i++) {
-      if (node.branch[i].id === id) {
-        node.branch.splice(i, 1);
-      } else {
-        queue.push(node.branch[i]);
-      }
-    }
-  }
-}
-
-function renameNode(tree, id, name) {
-  if (id === tree.id) {
-    tree.name = name;
-  } else {
-    forEachTree(tree, (node) => {
-      if (node.id === id) {
-        node.name = name;
-      }
-    });
-  }
 }

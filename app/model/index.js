@@ -1,3 +1,5 @@
+import { addNode, removeNode, renameNode } from './methods/methods';
+
 const initialState = {
   root: true,
   id: 1,
@@ -6,29 +8,7 @@ const initialState = {
     {
       id: 2,
       name: 'element-2',
-      branch: [
-        {
-          id: 3,
-          name: 'element-3',
-          branch: []
-        },
-        {
-          id: 4,
-          name: 'element-4',
-          branch: []
-        }
-      ]
-    },
-    {
-      id: 5,
-      name: 'element-5',
-      branch: [
-        {
-          id: 6,
-          name: 'element-6',
-          branch: []
-        }
-      ]
+      branch: []
     }
   ]
 };
@@ -40,6 +20,18 @@ class Model {
 
   get state() {
     return this._state;
+  }
+
+  addNode(id) {
+    addNode(this._state, id);
+  }
+
+  removeNode(id) {
+    removeNode(this._state, id);
+  }
+
+  renameNode(id, name) {
+    renameNode(this._state, id, name);
   }
 }
 
