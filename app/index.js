@@ -15,9 +15,9 @@ document.addEventListener('click', (event) => {
   const action = target.getAttribute('data-action');
   const id = parseInt(target.closest('.node').getAttribute('data-id'), 10);
 
-  if (action == 'remove') {
+  if (action === 'remove') {
     model.removeNode(id);
-  } else if (action == 'add') {
+  } else if (action === 'add') {
     model.addNode(id);
   }
 
