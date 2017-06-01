@@ -1,5 +1,7 @@
-import model from './model';
+import Model from './model';
 import { treeTempl } from './view/tree';
+
+const model = new Model();
 
 function render(tree = model.state) {
   const app = document.querySelector('#app');

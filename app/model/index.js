@@ -1,7 +1,6 @@
 import { addNode, removeNode, renameNode } from './methods/methods';
 
 const initialState = {
-  root: true,
   id: 1,
   name: 'element-1',
   branch: [
@@ -35,4 +34,4 @@ class Model {
   }
 }
 
-export default new Model();
+export default Model;
