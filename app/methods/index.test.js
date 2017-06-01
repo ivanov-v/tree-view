@@ -1,6 +1,6 @@
 import { getNewNodeId, addNode, removeNode, renameNode } from './index';
 
-test('Must return a new unique id', () => {
+test('Should return a new unique id', () => {
   expect(getNewNodeId({
     root: true,
     id: 1,
@@ -26,7 +26,7 @@ test('Must return a new unique id', () => {
   })).toBe(5);
 });
 
-test('Must add a new node and return tree', () => {
+test('Should add a new node and return tree', () => {
   expect(addNode({
     root: true,
     id: 1,
@@ -69,7 +69,7 @@ test('Must add a new node and return tree', () => {
   });
 });
 
-test('Must remove the node and return tree', () => {
+test('Should remove the node and return tree', () => {
   expect(removeNode({
     root: true,
     id: 1,
@@ -95,7 +95,7 @@ test('Must remove the node and return tree', () => {
   });
 });
 
-test('Must rename the node and return tree', () => {
+test('Should rename the node and return tree', () => {
   expect(renameNode({
     root: true,
     id: 1,
