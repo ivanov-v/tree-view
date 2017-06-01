@@ -30,6 +30,10 @@ html {
   padding-top: 0;
 }
 
+.tree > .node > .node__inner > .node__buttons > [data-action="remove"] {
+  display: none;
+}
+
 .tree > .node > .node__inner::before,
 .tree > .node > .node__inner::after {
   display: none;

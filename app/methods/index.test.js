@@ -2,7 +2,6 @@ import { getNewNodeId, addNode, removeNode, renameNode } from './index';
 
 test('Should return a new unique id', () => {
   expect(getNewNodeId({
-    root: true,
     id: 1,
     name: 'element-1',
     branch: [
@@ -28,7 +27,6 @@ test('Should return a new unique id', () => {
 
 test('Should add a new node and return tree', () => {
   expect(addNode({
-    root: true,
     id: 1,
     name: 'element-1',
     branch: [
@@ -45,7 +43,6 @@ test('Should add a new node and return tree', () => {
       }
     ]
   }, 2)).toEqual({
-    root: true,
     id: 1,
     name: 'element-1',
     branch: [
@@ -71,7 +68,6 @@ test('Should add a new node and return tree', () => {
 
 test('Should remove the node and return tree', () => {
   expect(removeNode({
-    root: true,
     id: 1,
     name: 'element-1',
     branch: [
@@ -88,7 +84,6 @@ test('Should remove the node and return tree', () => {
       }
     ]
   }, 2)).toEqual({
-    root: true,
     id: 1,
     name: 'element-1',
     branch: []
@@ -97,7 +92,6 @@ test('Should remove the node and return tree', () => {
 
 test('Should rename the node and return tree', () => {
   expect(renameNode({
-    root: true,
     id: 1,
     name: 'element-1',
     branch: [
@@ -108,7 +102,6 @@ test('Should rename the node and return tree', () => {
       }
     ]
   }, 1, 'new node name')).toEqual({
-    root: true,
     id: 1,
     name: 'new node name',
     branch: [

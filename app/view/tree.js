@@ -2,13 +2,13 @@ export function treeTempl(tree) {
   return `<ul class="tree">${ nodeTempl(tree) }</ul>`;
 }
 
-function nodeTempl({ id, name, branch, root }) {
+function nodeTempl({ id, name, branch }) {
   return `
     <li class="node" data-id="${ id }">
       <div class="node__inner">
         <input class="node__input" type="text" value=${ name }>
         <div class="node__buttons">
-          ${ root ? '' : buttonTempl('remove', 'remove -') }
+          ${ buttonTempl('remove', 'remove -') }
           ${ buttonTempl('add', 'add +') }
         </div>
       </div>
