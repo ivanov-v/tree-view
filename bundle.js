@@ -194,9 +194,9 @@ document.addEventListener('click', function (event) {
   var action = target.getAttribute('data-action');
   var id = parseInt(target.closest('.node').getAttribute('data-id'), 10);
 
-  if (action == 'remove') {
+  if (action === 'remove') {
     model.removeNode(id);
-  } else if (action == 'add') {
+  } else if (action === 'add') {
     model.addNode(id);
   }
 
