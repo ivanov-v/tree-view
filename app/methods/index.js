@@ -17,7 +17,11 @@ export function forEachTree(tree, callback) {
 
 export function addNode(tree, parentId) {
   const nodeId = getNewNodeId(tree);
-  const newNode = new Node(nodeId);
+  const newNode = {
+    id: nodeId,
+    name: `element-${nodeId}`,
+    branch: []
+  };
 
   if (parentId === tree.id) {
     tree.branch.push(newNode);
@@ -28,6 +32,8 @@ export function addNode(tree, parentId) {
       }
     });
   }
+
+  return tree;
 }
 
 export function removeNode(tree, id) {
@@ -44,6 +50,8 @@ export function removeNode(tree, id) {
       }
     }
   }
+
+  return tree;
 }
 
 export function renameNode(tree, id, name) {
@@ -56,4 +64,6 @@ export function renameNode(tree, id, name) {
       }
     });
   }
+
+  return tree;
 }
