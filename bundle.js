@@ -63,11 +63,123 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _model = __webpack_require__(2);
+
+var _model2 = _interopRequireDefault(_model);
+
+var _view = __webpack_require__(4);
+
+var _view2 = _interopRequireDefault(_view);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Presenter = function () {
+  function Presenter() {
+    _classCallCheck(this, Presenter);
+
+    this.root = document.querySelector('#app');
+  }
+
+  _createClass(Presenter, [{
+    key: 'init',
+    value: function init() {
+      this.model = new _model2.default(this.getLocalTree());
+      this.initView();
+    }
+  }, {
+    key: 'initView',
+    value: function initView() {
+      this.view = new _view2.default(this.model.state);
+      this.view.onClick = this.nodeButtons.bind(this);
+      this.view.onInput = this.nodeInputs.bind(this);
+      this.render();
+      this.view.bindButtonsListener();
+    }
+  }, {
+    key: 'nodeButtons',
+    value: function nodeButtons(_ref) {
+      var action = _ref.action,
+          id = _ref.id;
+
+      if (action === 'remove') {
+        this.model.removeNode(id);
+      } else if (action === 'add') {
+        this.model.addNode(id);
+      }
+
+      this.render();
+      this.saveLocalTree(this.model.state);
+    }
+  }, {
+    key: 'nodeInputs',
+    value: function nodeInputs(_ref2) {
+      var value = _ref2.value,
+          id = _ref2.id;
+
+      this.model.renameNode(id, value);
+      this.saveLocalTree(this.model.state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      this.root.innerHTML = this.view.getMarkup();
+      this.view.bindInputsListener();
+    }
+  }, {
+    key: 'getLocalTree',
+    value: function getLocalTree() {
+      var savedTree = localStorage.getItem('tree');
+      return savedTree ? JSON.parse(savedTree) : undefined;
+    }
+  }, {
+    key: 'saveLocalTree',
+    value: function saveLocalTree(tree) {
+      var savedTree = JSON.stringify(tree);
+      localStorage.setItem('tree', savedTree);
+    }
+  }]);
+
+  return Presenter;
+}();
+
+exports.default = Presenter;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _presenter = __webpack_require__(0);
+
+var _presenter2 = _interopRequireDefault(_presenter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = new _presenter2.default();
+app.init();
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130,113 +242,6 @@ var Model = function () {
 exports.default = Model;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.treeTempl = treeTempl;
-function treeTempl(tree) {
-  return '<ul class="tree">' + nodeTempl(tree) + '</ul>';
-}
-
-function nodeTempl(_ref) {
-  var id = _ref.id,
-      name = _ref.name,
-      branch = _ref.branch;
-
-  return '\n    <li class="node" data-id="' + id + '">\n      <div class="node__inner">\n        <input class="node__input" type="text" value=' + name + '>\n        <div class="node__buttons">\n          ' + buttonTempl('remove', 'remove -') + '\n          ' + buttonTempl('add', 'add +') + '\n        </div>\n      </div>\n      ' + (branch && branch.length ? branchTempl(branch) : '') + '\n    </li>\n  ';
-}
-
-function branchTempl(items) {
-  return '\n    <ul class="branch">\n      ' + items.map(function (item) {
-    return nodeTempl(item);
-  }).join('') + '\n    </ul>\n  ';
-}
-
-function buttonTempl(action, text) {
-  return '<button class="node__button" data-action="' + action + '">' + text + '</button>';
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _model = __webpack_require__(0);
-
-var _model2 = _interopRequireDefault(_model);
-
-var _tree = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var model = new _model2.default(getLocalTree());
-
-render();
-
-document.addEventListener('click', function (event) {
-  var target = event.target;
-
-
-  if (target.className !== 'node__button') {
-    return;
-  }
-
-  var action = target.getAttribute('data-action');
-  var id = parseInt(target.closest('.node').getAttribute('data-id'), 10);
-
-  if (action === 'remove') {
-    model.removeNode(id);
-  } else if (action === 'add') {
-    model.addNode(id);
-  }
-
-  render(model.state);
-  saveLocalTree(model.state);
-});
-
-function updateListeners() {
-  [].concat(_toConsumableArray(document.querySelectorAll('.node__input'))).forEach(function (input) {
-    input.addEventListener('input', function (event) {
-      var target = event.target;
-
-      var nodeElem = target.closest('.node');
-      var id = parseInt(nodeElem.getAttribute('data-id'), 10);
-
-      model.renameNode(id, target.value);
-      saveLocalTree(model.state);
-    });
-  });
-}
-
-function getLocalTree() {
-  var savedTree = localStorage.getItem('tree');
-  return savedTree ? JSON.parse(savedTree) : undefined;
-}
-
-function saveLocalTree(tree) {
-  var savedTree = JSON.stringify(tree);
-  localStorage.setItem('tree', savedTree);
-}
-
-function render() {
-  var tree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : model.state;
-
-  var app = document.querySelector('#app');
-  app.innerHTML = (0, _tree.treeTempl)(tree);
-  updateListeners();
-}
-
-/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -251,6 +256,7 @@ exports.forEachTree = forEachTree;
 exports.addNode = addNode;
 exports.removeNode = removeNode;
 exports.renameNode = renameNode;
+exports.findNode = findNode;
 function getNewNodeId(tree) {
   var nodes = [];
 
@@ -274,18 +280,15 @@ function addNode(tree, parentId) {
   var nodeId = getNewNodeId(tree);
   var newNode = {
     id: nodeId,
-    name: "element-" + nodeId,
+    name: 'element-' + nodeId,
     branch: []
   };
 
   if (parentId === tree.id) {
     tree.branch.push(newNode);
   } else {
-    forEachTree(tree, function (node) {
-      if (node.id === parentId) {
-        node.branch.push(newNode);
-      }
-    });
+    var target = findNode(tree, parentId);
+    target.branch.push(newNode);
   }
 
   return tree;
@@ -313,14 +316,138 @@ function renameNode(tree, id, name) {
   if (id === tree.id) {
     tree.name = name;
   } else {
-    forEachTree(tree, function (node) {
-      if (node.id === id) {
-        node.name = name;
-      }
-    });
+    var target = findNode(tree, id);
+    target.name = name;
   }
 
   return tree;
+}
+
+function findNode(tree, id) {
+  var target = void 0;
+
+  forEachTree(tree, function (node) {
+    if (node.id === id) {
+      target = node;
+    }
+  });
+
+  if (target === undefined) {
+    throw new Error('Node not found');
+  }
+
+  return target;
+}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var View = function () {
+  function View(state) {
+    _classCallCheck(this, View);
+
+    this.data = state;
+  }
+
+  _createClass(View, [{
+    key: 'getMarkup',
+    value: function getMarkup() {
+      return treeTempl(this.data);
+    }
+  }, {
+    key: 'bindButtonsListener',
+    value: function bindButtonsListener() {
+      var _this = this;
+
+      document.addEventListener('click', function (event) {
+        var target = event.target;
+
+
+        if (target.className !== 'node__button') {
+          return;
+        }
+
+        var action = target.getAttribute('data-action');
+        var id = parseInt(target.closest('.node').getAttribute('data-id'), 10);
+
+        _this._onClick({
+          action: action,
+          id: id
+        });
+      });
+    }
+  }, {
+    key: 'bindInputsListener',
+    value: function bindInputsListener() {
+      var _this2 = this;
+
+      [].concat(_toConsumableArray(document.querySelectorAll('.node__input'))).forEach(function (input) {
+        input.addEventListener('input', function (event) {
+          var target = event.target;
+
+          var value = target.value;
+          var nodeElem = target.closest('.node');
+          var id = parseInt(nodeElem.getAttribute('data-id'), 10);
+
+          _this2._onInput({
+            value: value,
+            id: id
+          });
+        });
+      });
+    }
+  }, {
+    key: 'onClick',
+    set: function set(handler) {
+      this._onClick = handler;
+    }
+  }, {
+    key: 'onInput',
+    set: function set(handler) {
+      this._onInput = handler;
+    }
+  }]);
+
+  return View;
+}();
+
+exports.default = View;
+
+
+function treeTempl(tree) {
+  return '<ul class="tree">' + nodeTempl(tree) + '</ul>';
+}
+
+function nodeTempl(_ref) {
+  var id = _ref.id,
+      name = _ref.name,
+      branch = _ref.branch;
+
+  return '\n    <li class="node" data-id="' + id + '">\n      <div class="node__inner">\n        <input class="node__input" type="text" value=' + name + '>\n        <div class="node__buttons">\n          ' + buttonTempl('remove', 'remove -') + '\n          ' + buttonTempl('add', 'add +') + '\n        </div>\n      </div>\n      ' + (branch && branch.length ? branchTempl(branch) : '') + '\n    </li>\n  ';
+}
+
+function branchTempl(items) {
+  return '\n    <ul class="branch">\n      ' + items.map(function (item) {
+    return nodeTempl(item);
+  }).join('') + '\n    </ul>\n  ';
+}
+
+function buttonTempl(action, text) {
+  return '<button class="node__button" data-action="' + action + '">' + text + '</button>';
 }
 
 /***/ })
