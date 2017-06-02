@@ -1,4 +1,4 @@
-import { getNewNodeId, addNode, removeNode, renameNode } from './methods';
+import { getNewNodeId, addNode, removeNode, renameNode, findNode } from './methods';
 
 test('Should return a new unique id', () => {
   expect(getNewNodeId({
@@ -112,4 +112,60 @@ test('Should rename the node and return tree', () => {
       }
     ]
   });
+});
+
+test('Should find node', () => {
+  expect(findNode({
+    id: 1,
+    name: 'element-1',
+    branch: [
+      {
+        id: 2,
+        name: 'element-2',
+        branch: [
+          {
+            id: 3,
+            name: 'element-3',
+            branch: []
+          },
+          {
+            id: 4,
+            name: 'element-4',
+            branch: []
+          }
+        ]
+      }
+    ]
+  }, 4)).toEqual({
+    id: 4,
+    name: 'element-4',
+    branch: []
+  });
+});
+
+test('Throws an error if does not find the node', () => {
+  expect(() => {
+    findNode({
+      id: 1,
+      name: 'element-1',
+      branch: [
+        {
+          id: 2,
+          name: 'element-2',
+          branch: [
+            {
+              id: 3,
+              name: 'element-3',
+              branch: []
+            },
+            {
+              id: 4,
+              name: 'element-4',
+              branch: []
+            }
+          ]
+        }
+      ]
+    }, 7);
+  }).toThrowError('Node not found');
 });

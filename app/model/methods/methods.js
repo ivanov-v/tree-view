@@ -26,11 +26,8 @@ export function addNode(tree, parentId) {
   if (parentId === tree.id) {
     tree.branch.push(newNode);
   } else {
-    forEachTree(tree, (node) => {
-      if (node.id === parentId) {
-        node.branch.push(newNode);
-      }
-    });
+    const target = findNode(tree, parentId);
+    target.branch.push(newNode);
   }
 
   return tree;
@@ -58,12 +55,25 @@ export function renameNode(tree, id, name) {
   if (id === tree.id) {
     tree.name = name;
   } else {
-    forEachTree(tree, (node) => {
-      if (node.id === id) {
-        node.name = name;
-      }
-    });
+    const target = findNode(tree, id);
+    target.name = name;
   }
 
   return tree;
+}
+
+export function findNode(tree, id) {
+  let target;
+
+  forEachTree(tree, (node) => {
+    if (node.id === id) {
+      target = node;
+    }
+  });
+
+  if (target === undefined) {
+    throw new Error('Node not found');
+  }
+
+  return target;
 }
